@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California Golden Detailers | Premium Mobile Detailing LA & OC</title>
+    <meta name="description" content="Premium mobile automotive detailing serving Los Angeles and Orange County. Interior steam cleaning, exterior paint correction, and ceramic coatings.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#F59E0B',
+                            primaryHover: '#D97706',
+                            dark: '#0B0F19',
+                            card: '#111827',
+                            border: '#1F2937'
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(to bottom, rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 1)), url('https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2069&auto=format&fit=crop')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f59e0b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2em;
+        }
+        .glow-gold:hover {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
+        }
+        #vehicle-preview-img {
+            transition: opacity 0.3s ease-in-out, transform 0.4s ease;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            appearance: none;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            cursor: ew-resize;
+        }
+        /* Toast animation */
+        @keyframes toastIn {
+            from { transform: translateY(100%) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .toast-animate {
+            animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-300 font-sans antialiased selection:bg-brand-primary selection:text-brand-dark pb-20 md:pb-0">
+
+    <nav class="fixed w-full z-50 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-300 via-brand-primary to-amber-600 flex items-center justify-center text-brand-dark shadow-lg shadow-brand-primary/20 group-hover:scale-105 transition">
+                        <i class="fa-solid fa-gem text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-heading font-black text-xl tracking-tight text-white block leading-none">
+                            CALIFORNIA <span class="text-brand-primary">GOLDEN</span>
+                        </span>
+                        <span class="text-[10px] font-semibold tracking-widest uppercase text-slate-400 block mt-1">
+                            Mobile Detailers LA • OC
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex items-center space-x-8 text-xs font-bold tracking-wider uppercase">
+                    <a href="#services" class="hover:text-brand-primary transition">Services</a>
+                    <a href="#quote" class="hover:text-brand-primary transition">Instant Quote</a>
+                    <a href="#before-after" class="hover:text-brand-primary transition">Gallery</a>
+                    <a href="#reviews" class="hover:text-brand-primary transition">Reviews</a>
+                    <a href="#location" class="hover:text-brand-primary transition">Location & Contact</a>
+                </div>
+
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="tel:+15719822034" class="bg-brand-primary hover:bg-brand-primaryHover text-brand-dark px-5 py-2.5 rounded-xl font-extrabold tracking-wider text-xs uppercase transition glow-gold flex items-center gap-2">
+                        <i class="fa-solid fa-phone"></i> (571) 982-2034
+                    </a>
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white text-2xl focus:outline-none p-2" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-slate-800 absolute w-full left-0 shadow-2xl">
+            <div class="px-6 pt-3 pb-6 space-y-3 text-center font-semibold uppercase text-sm">
+                <a href="#services" class="block py-2 text-slate-300 hover:text-brand-primary border-b border-slate-800/50">Services</a>
+                <a href="#quote" class="block py-2 text-slate-300 hover:text-brand-primary border-b border-slate-800/50">Instant Quote</a>
+                <a href="#before-after" class="block py-2 text-slate-300 hover:text-brand-primary border-b border-slate-800/50">Gallery</a>
+                <a href="#reviews" class="block py-2 text-slate-300 hover:text-brand-primary border-b border-slate-800/50">Reviews</a>
+                <a href="#location" class="block py-2 text-slate-300 hover:text-brand-primary">Location & Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-[88vh] flex items-center justify-center bg-hero-pattern bg-cover bg-center bg-no-repeat pt-24 px-4">
+        <div class="max-w-4xl mx-auto text-center relative z-10 mt-6">
+            
+            <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/30 rounded-full px-4 py-2 mb-6 backdrop-blur-md shadow-xl">
+                <div class="text-brand-primary text-xs flex gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+                <span class="text-xs font-bold text-slate-200">4.8 Rating • 83 Verified Reviews • LA & OC Coverage</span>
+            </div>
+
+            <h1 class="font-heading font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white mb-6 uppercase leading-[0.95]">
+                We Don't Just Clean Cars, <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-brand-primary to-amber-500">We Bring Them Back To Life</span>
+            </h1>
+            
+            <p class="text-base md:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed mb-10">
+                Premium mobile automotive detailing serving Santa Monica, Los Angeles, and Orange County. 
+                <strong class="text-white font-semibold">We bring fully equipped detailing rigs straight to your door.</strong>
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="tel:+15719822034" class="w-full sm:w-auto bg-brand-primary hover:bg-brand-primaryHover text-brand-dark font-black text-sm px-8 py-4 rounded-xl shadow-xl shadow-brand-primary/20 transition flex items-center justify-center gap-3 uppercase tracking-wider glow-gold">
+                    <i class="fa-solid fa-phone-volume text-lg"></i> Call (571) 982-2034
+                </a>
+                <a href="#quote" class="w-full sm:w-auto glass-panel hover:bg-slate-800 text-white border border-slate-700 font-bold text-sm px-8 py-4 rounded-xl transition flex items-center justify-center gap-2 uppercase tracking-wider">
+                    <i class="fa-solid fa-calculator text-brand-primary"></i> Get Instant Quote
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 bg-brand-dark border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight">Our Premier <span class="text-brand-primary">Services</span></h2>
+                <p class="text-slate-400 mt-3 text-sm max-w-2xl mx-auto">From standard maintenance washes to deep interior sanitization and multi-stage paint restoration.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-slate-800 hover:border-brand-primary/40 transition duration-300 group shadow-xl">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-car-wash"></i>
+                    </div>
+                    <div class="flex justify-between items-baseline mb-3">
+                        <h3 class="font-bold text-white text-xl">Mobile Wash & Wax</h3>
+                        <span class="text-brand-primary font-black text-sm">Starts at $50</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">Hand wash, foam bath, clay treatment, tire dressing, interior vacuum, streak-free window cleaning, and protective hand wax.</p>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-slate-800 hover:border-brand-primary/40 transition duration-300 group shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-primary text-brand-dark font-black text-[10px] uppercase px-3 py-1 rounded-bl-lg">Most Popular</div>
+                    <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-spray-can-sparkles"></i>
+                    </div>
+                    <div class="flex justify-between items-baseline mb-3">
+                        <h3 class="font-bold text-white text-xl">Interior Steam & Skunk Deodorize</h3>
+                        <span class="text-brand-primary font-black text-sm">Custom Quote</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">Deep carpet hot water extraction, high-temperature steam sanitization, leather conditioning, stubborn pet hair removal, and skunk odor remediation.</p>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-slate-800 hover:border-brand-primary/40 transition duration-300 group shadow-xl">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div class="flex justify-between items-baseline mb-3">
+                        <h3 class="font-bold text-white text-xl">Paint Correction & Ceramic</h3>
+                        <span class="text-brand-primary font-black text-sm">Quote Required</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">1-Step or 2-Step machine polish to eliminate swirl marks and scratches, completed with 1-to-5 year hydrophobic ceramic coatings.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="before-after" class="py-24 bg-[#080d16] border-t border-slate-800/60">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight">The Golden <span class="text-brand-primary">Transformation</span></h2>
+                <p class="text-slate-400 mt-2 text-sm">Drag the center slider to see dirty, neglected vehicles brought back to showroom perfection.</p>
+            </div>
+
+            <div class="relative w-full h-[360px] sm:h-[480px] rounded-3xl overflow-hidden border border-slate-700 shadow-2xl group select-none">
+                <!-- After Image (Bottom Layer) -->
+                <img src="https://cdn.postimage.me/2026/10/04/Gemini_Generated_Image_d9nb06d9nb06d9nb.png" alt="Cleaned Vehicle After Detailing" class="absolute inset-0 w-full h-full object-cover pointer-events-none">
+                
+                <!-- Before Image (Top Layer Clipped) -->
+                <img id="ba-img-before" src="https://cdn.postimage.me/2026/10/04/Gemini_Generated_Image_fmohbyfmohbyfmoh-1.png" alt="Dirty Vehicle Before Detailing" class="absolute inset-0 w-full h-full object-cover pointer-events-none" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); filter: brightness(0.65) contrast(1.2) sepia(0.25);">
+                
+                <!-- Range Input -->
+                <input type="range" min="0" max="100" value="50" id="ba-slider" class="absolute inset-0 w-full h-full opacity-0 z-20 cursor-ew-resize slider-thumb m-0 outline-none" aria-label="Before and After Slider">
+                
+                <!-- Divider Line -->
+                <div id="ba-divider" class="absolute top-0 bottom-0 w-1 bg-brand-primary shadow-[0_0_12px_rgba(245,158,11,0.9)] pointer-events-none z-10 flex items-center justify-center transform -translate-x-1/2" style="left: 50%;">
+                    <div class="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center text-brand-dark shadow-xl font-bold">
+                        <i class="fa-solid fa-arrows-left-right text-xs"></i>
+                    </div>
+                </div>
+
+                <div class="absolute top-4 left-4 bg-black/70 backdrop-blur text-white text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider z-10 pointer-events-none border border-white/10">Before</div>
+                <div class="absolute top-4 right-4 bg-brand-primary/95 backdrop-blur text-brand-dark text-xs font-black px-3 py-1.5 rounded-lg uppercase tracking-wider z-10 pointer-events-none shadow-lg">After</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quote" class="py-24 bg-brand-dark relative overflow-hidden border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-14">
+                <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight">Interactive <span class="text-brand-primary">Quote Estimator</span></h2>
+                <p class="text-slate-400 mt-2 text-sm max-w-xl mx-auto">Select your vehicle category to preview pricing, then text Ronnie directly for fast scheduling.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- Form Inputs -->
+                <div class="lg:col-span-6 space-y-6 bg-brand-card/90 backdrop-blur p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl">
+                    
+                    <div>
+                        <label class="block text-xs font-bold tracking-wider text-slate-300 uppercase mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-car text-brand-primary"></i> 1. Select Vehicle Type
+                        </label>
+                        <select id="est-vehicle" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-4 focus:outline-none focus:border-brand-primary transition text-sm font-semibold cursor-pointer">
+                            <option value="wash" data-name="Basic Mobile Wash ($50)" data-price="50" data-img="https://cdn.postimage.me/2026/10/04/unnamed.jpg">Basic Mobile Wash ($50)</option>
+                            <option value="sedan" data-name="Sedan / Small Car ($130+)" data-price="130" data-img="https://cdn.postimage.me/2026/10/04/images.jpeg" selected>Sedan / Small Car ($130+)</option>
+                            <option value="suv" data-name="SUV / Truck ($150+)" data-price="150" data-img="https://cdn.postimage.me/2026/10/04/images-2.jpeg">Mid-Size SUV / Truck ($150+)</option>
+                            <option value="exotic" data-name="Large SUV / Exotic ($190+)" data-price="190" data-img="https://cdn.postimage.me/2026/10/04/images-1.jpeg">Large SUV / Exotic ($190+)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold tracking-wider text-slate-300 uppercase mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-box-open text-brand-primary"></i> 2. Detailing Service Level
+                        </label>
+                        <select id="est-package" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-4 focus:outline-none focus:border-brand-primary transition text-sm font-semibold cursor-pointer">
+                            <option value="standard" data-name="Standard Mobile Detail">Standard Mobile Detail (Ext Wash & Int Vacuum)</option>
+                            <option value="works" data-name="The Works (Full Deep Clean & Wax)">The Works (Deep Carpet Shampoo, Wax & Interior Detail +$30)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold tracking-wider text-slate-300 uppercase mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-square-plus text-brand-primary"></i> 3. Optional Service Add-ons
+                        </label>
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between bg-slate-900 border border-slate-800 px-4 py-3.5 rounded-xl cursor-pointer hover:border-slate-700 transition group">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" class="est-addon w-5 h-5 accent-brand-primary bg-slate-800 border-slate-700 rounded cursor-pointer" value="50" data-name="Pet Hair & Skunk Odor Treatment">
+                                    <span class="text-sm font-medium text-slate-200 group-hover:text-white transition">Pet Hair & Skunk Odor Removal</span>
+                                </div>
+                                <span class="text-xs font-bold text-brand-primary bg-brand-primary/10 px-2.5 py-1 rounded-lg">+$50</span>
+                            </label>
+                            
+                            <label class="flex items-center justify-between bg-slate-900 border border-slate-800 px-4 py-3.5 rounded-xl cursor-pointer hover:border-slate-700 transition group">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" class="est-addon w-5 h-5 accent-brand-primary bg-slate-800 border-slate-700 rounded cursor-pointer" value="150" data-name="Paint Scratch & Swirl Polish">
+                                    <span class="text-sm font-medium text-slate-200 group-hover:text-white transition">Scratch Removal & Paint Polish</span>
+                                </div>
+                                <span class="text-xs font-bold text-brand-primary bg-brand-primary/10 px-2.5 py-1 rounded-lg">+$150</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview & Summary -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="w-full h-56 sm:h-64 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl relative bg-slate-900">
+                        <img id="vehicle-preview-img" src="https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1000&auto=format&fit=crop" alt="Selected Vehicle Preview" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-200 uppercase">
+                            Dynamic Vehicle Preview
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl">
+                        <h3 class="font-heading font-bold text-lg uppercase tracking-wide text-white mb-4 border-b border-slate-800 pb-3 flex justify-between items-center">
+                            Estimated Quote Summary
+                            <span class="text-xs text-brand-primary font-sans font-bold normal-case">LA & OC Mobile</span>
+                        </h3>
+
+                        <div class="space-y-3 mb-6 text-sm">
+                            <div class="flex justify-between items-center text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+                                <span class="text-slate-400">Vehicle:</span>
+                                <strong id="sum-vehicle" class="text-white">Sedan / Small Car</strong>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+                                <span class="text-slate-400">Service:</span>
+                                <strong id="sum-package" class="text-white text-right">Standard Mobile Detail</strong>
+                            </div>
+                            <div class="flex justify-between items-start text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+                                <span class="text-slate-400">Add-ons:</span>
+                                <strong id="sum-addons" class="text-white text-right max-w-[200px]">None</strong>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 rounded-2xl p-4 text-center mb-6 border border-slate-800">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Estimated Total</span>
+                            <div id="sum-price" class="font-heading font-black text-4xl text-brand-primary">$130</div>
+                        </div>
+
+                        <a id="btn-text-book" href="sms:+15719822034" class="w-full bg-brand-primary hover:bg-brand-primaryHover text-brand-dark font-black py-4 rounded-xl uppercase tracking-wider block text-center text-sm transition shadow-lg flex items-center justify-center gap-2 glow-gold">
+                            <i class="fa-solid fa-comment-sms text-lg"></i> Text (571) 982-2034 To Book
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="py-20 bg-[#080d16] border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center gap-2 bg-slate-900 border border-slate-700 rounded-full px-4 py-2 mb-4">
+                    <span class="text-white font-bold text-sm">4.8 / 5.0</span>
+                    <div class="text-brand-primary text-xs flex gap-0.5">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                </div>
+                <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight">Wall of <span class="text-brand-primary">Fame</span></h2>
+                <p class="text-slate-400 mt-2 text-sm">Real Verified Google Reviews from California Golden Detailers clients</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-slate-800 flex flex-col justify-between relative shadow-xl">
+                    <i class="fa-solid fa-quote-right absolute top-6 right-6 text-3xl text-slate-800"></i>
+                    <div>
+                        <div class="flex text-brand-primary text-xs mb-4 gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed italic mb-8 relative z-10">
+                            "My dog got skunked and after driving him home, my car REEKED of skunk. I thought it was trashed. Called them and they got to me in the AM, spent like 5 hours deodorizing it and cleaning it out, and now it’s like brand new again! 🤩🤩"
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4 pt-4 border-t border-slate-800">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-pink-600 to-rose-900 text-white flex items-center justify-center font-bold text-sm shadow-inner">CA</div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Christy Ai</h4>
+                            <span class="text-[10px] font-semibold text-brand-primary uppercase">6 Reviews • Skunk Deodorization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-slate-800 flex flex-col justify-between relative shadow-xl">
+                    <i class="fa-solid fa-quote-right absolute top-6 right-6 text-3xl text-slate-800"></i>
+                    <div>
+                        <div class="flex text-brand-primary text-xs mb-4 gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed italic mb-8 relative z-10">
+                            "I am here to give 5 🌟 and maybe more! These people are doing a very good job. If you see my review give them a shot, you won't regret it!"
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4 pt-4 border-t border-slate-800">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-600 to-indigo-900 text-white flex items-center justify-center font-bold text-sm shadow-inner">TP</div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Tasker Pro</h4>
+                            <span class="text-[10px] font-semibold text-brand-primary uppercase">6 Reviews • Punctual Team</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-slate-800 flex flex-col justify-between relative shadow-xl">
+                    <i class="fa-solid fa-quote-right absolute top-6 right-6 text-3xl text-slate-800"></i>
+                    <div>
+                        <div class="flex text-brand-primary text-xs mb-4 gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed italic mb-8 relative z-10">
+                            "I chose this place because the reviews looked great. Asked for 'The Works' to prepare my vehicle for meeting clients. Extremely thorough mobile detail!"
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-4 pt-4 border-t border-slate-800">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-emerald-600 to-teal-900 text-white flex items-center justify-center font-bold text-sm shadow-inner">AP</div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Anna Palco</h4>
+                            <span class="text-[10px] font-semibold text-brand-primary uppercase">7 Reviews • The Works Package</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="location" class="py-20 bg-brand-dark border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                
+                <!-- Contact Card -->
+                <div class="space-y-6">
+                    <div>
+                        <span class="bg-brand-primary/10 text-brand-primary border border-brand-primary/20 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+                            Location & Service Coverage
+                        </span>
+                        <h2 class="font-heading font-black text-3xl md:text-4xl text-white uppercase tracking-tight mt-4">
+                            Santa Monica <span class="text-brand-primary">Hub & Mobile Fleet</span>
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                            Visit our Santa Monica location or schedule a mobile detailing unit to visit your home or workplace in Los Angeles and Orange County.
+                        </p>
+                    </div>
+
+                    <!-- Address Box -->
+                    <div class="bg-brand-card p-6 rounded-3xl border border-slate-800 space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center text-brand-primary text-xl flex-shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-white text-base">Address</h4>
+                                <p class="text-slate-300 text-sm mt-0.5" id="address-text">2215 20th St, Santa Monica, CA 90405</p>
+                                <p class="text-xs text-brand-primary mt-1 font-semibold">Mon–Sun: 7:00 AM – 9:00 PM</p>
+                            </div>
+                        </div>
+
+                        <!-- Location Action Buttons -->
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="openDirections()" class="flex-1 min-w-[140px] bg-brand-primary hover:bg-brand-primaryHover text-brand-dark font-black py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-diamond-turn-right text-sm"></i> Get Directions
+                            </button>
+                            <button onclick="copyAddress()" class="flex-1 min-w-[140px] bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-copy text-sm text-brand-primary"></i> Copy Address
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contact Methods Box -->
+                    <div class="bg-brand-card p-6 rounded-3xl border border-slate-800 space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center text-brand-primary text-xl flex-shrink-0">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">Phone & Email</h4>
+                                <p class="text-slate-300 text-sm mt-0.5">Call/Text: (571) 982-2034</p>
+                                <p class="text-slate-300 text-sm">Email: californiagoldendetails@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <!-- Fixed Email Buttons -->
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="triggerEmailUs()" class="flex-1 min-w-[140px] bg-brand-primary hover:bg-brand-primaryHover text-brand-dark font-black py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-envelope text-sm"></i> Email Us
+                            </button>
+                            <button onclick="openEmailModal()" class="flex-1 min-w-[140px] bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-sm text-brand-primary"></i> Quick Form
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Embedded Google Map -->
+                <div class="h-[460px] rounded-3xl overflow-hidden border border-slate-700 shadow-2xl relative bg-slate-900">
+                    <iframe 
+                        title="California Golden Detailers Santa Monica Location Map" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3307.728902573216!2d-118.47182282352874!3d34.02512681847528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bb390e1fcd2b%3A0xb3cfbfd060f64c67!2s2215%2020th%20St%2C%20Santa%20Monica%2C%20CA%2090405!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0; filter: grayscale(0.8) contrast(1.2) invert(0.92) hue-rotate(180deg);" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#04070e] py-12 border-t border-slate-900 text-center relative z-20">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center gap-4">
+            <div class="text-brand-primary text-3xl"><i class="fa-solid fa-gem"></i></div>
+            <h3 class="font-heading font-black uppercase tracking-widest text-white text-lg">California Golden Detailers</h3>
+            
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-400">
+                <a href="tel:+15719822034" class="hover:text-brand-primary transition"><i class="fa-solid fa-phone text-brand-primary mr-1"></i> (571) 982-2034</a>
+                <button onclick="triggerEmailUs()" class="hover:text-brand-primary transition"><i class="fa-solid fa-envelope text-brand-primary mr-1"></i> californiagoldendetails@gmail.com</button>
+                <span class="text-slate-600"><i class="fa-solid fa-location-dot text-brand-primary mr-1"></i> Santa Monica, CA</span>
+            </div>
+            
+            <p class="text-slate-600 text-[11px] mt-4">&copy; 2026 California Golden Detailers. All Rights Reserved. 100% Satisfaction Guarantee.</p>
+        </div>
+    </footer>
+
+    <div class="md:hidden fixed bottom-0 left-0 w-full glass-panel border-t border-slate-700/80 p-3 z-40 flex gap-3 shadow-[0_-10px_20px_rgba(0,0,0,0.6)]">
+        <a href="tel:+15719822034" class="flex-1 bg-brand-primary text-brand-dark font-black py-3 rounded-xl text-center text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+            <i class="fa-solid fa-phone"></i> Call
+        </a>
+        <a href="sms:+15719822034" class="flex-1 bg-slate-900 text-white font-bold border border-slate-700 py-3 rounded-xl text-center text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+            <i class="fa-solid fa-comment"></i> Text
+        </a>
+        <button onclick="triggerEmailUs()" class="flex-1 bg-slate-800 text-slate-200 font-bold border border-slate-700 py-3 rounded-xl text-center text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+            <i class="fa-solid fa-envelope text-brand-primary"></i> Email
+        </button>
+    </div>
+
+    <div id="email-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-brand-card border border-slate-700 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeEmailModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl p-2" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading font-black text-white text-lg uppercase">Send Email Inquiry</h3>
+                    <p class="text-slate-400 text-xs">Directly to californiagoldendetails@gmail.com</p>
+                </div>
+            </div>
+
+            <form id="modal-email-form" onsubmit="handleModalSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Your Name</label>
+                    <input type="text" id="modal-name" required placeholder="John Doe" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Your Phone or Email</label>
+                    <input type="text" id="modal-contact" required placeholder="phone or email" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Vehicle & Service Needed</label>
+                    <textarea id="modal-msg" rows="3" required placeholder="2022 SUV - Needs deep interior steam and wax..." class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-primary"></textarea>
+                </div>
+                
+                <div class="flex gap-3 pt-2">
+                    <button type="submit" class="flex-1 bg-brand-primary hover:bg-brand-primaryHover text-brand-dark font-black py-3.5 rounded-xl uppercase text-xs tracking-wider transition">
+                        Open Mail App
+                    </button>
+                    <button type="button" onclick="copyInquiryText()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-4 rounded-xl border border-slate-700 text-xs uppercase">
+                        Copy Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" class="fixed top-24 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        
+        // Toast Notification System
+        function showToast(message, icon = 'fa-check-circle') {
+            const container = document.getElementById('toast-container');
+            if(!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900/95 border border-amber-500/40 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 toast-animate pointer-events-auto backdrop-blur-md max-w-sm';
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-brand-primary text-lg"></i>
+                <span class="text-xs font-semibold leading-tight">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Standard Clipboard Copy Function
+        function copyTextToClipboard(text, successMsg) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast(successMsg || 'Copied to clipboard!');
+            } catch (err) {
+                showToast('Failed to copy text', 'fa-triangle-exclamation');
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
+        // Location Actions
+        function openDirections() {
+            const address = "2215 20th St, Santa Monica, CA 90405";
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+            window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+            showToast('Opening Google Maps Directions...');
+        }
+
+        function copyAddress() {
+            const address = "2215 20th St, Santa Monica, CA 90405";
+            copyTextToClipboard(address, 'Address copied! Ready to paste into Maps.');
+        }
+
+        // Fixed Email Actions
+        function triggerEmailUs() {
+            const email = "californiagoldendetails@gmail.com";
+            const subject = encodeURIComponent("Detailing Inquiry - California Golden Detailers");
+            const body = encodeURIComponent("Hi California Golden Detailers,\n\nI would like to request an estimate for my vehicle.\n\nVehicle Year/Make/Model:\nService Requested:\nPreferred Date:");
+            
+            // 1. Copy to clipboard
+            copyTextToClipboard(email, 'Email address copied to clipboard!');
+            
+            // 2. Trigger mailto without target="_blank"
+            setTimeout(() => {
+                window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+            }, 300);
+        }
+
+        // Modal Functions
+        function openEmailModal() {
+            document.getElementById('email-modal').classList.remove('hidden');
+        }
+
+        function closeEmailModal() {
+            document.getElementById('email-modal').classList.add('hidden');
+        }
+
+        function handleModalSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('modal-name').value;
+            const contact = document.getElementById('modal-contact').value;
+            const msg = document.getElementById('modal-msg').value;
+
+            const email = "californiagoldendetails@gmail.com";
+            const subject = encodeURIComponent(`New Inquiry from ${name}`);
+            const body = encodeURIComponent(`Name: ${name}\nContact: ${contact}\nDetails: ${msg}`);
+
+            closeEmailModal();
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+            showToast('Opening default mail application...');
+        }
+
+        function copyInquiryText() {
+            const name = document.getElementById('modal-name').value || 'Customer';
+            const contact = document.getElementById('modal-contact').value || 'N/A';
+            const msg = document.getElementById('modal-msg').value || 'Detailing requested';
+
+            const formatted = `To: californiagoldendetails@gmail.com\nSubject: Inquiry from ${name}\nContact: ${contact}\nDetails: ${msg}`;
+            copyTextToClipboard(formatted, 'Inquiry message copied to clipboard!');
+        }
+
+        // Main DOM Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Before & After Interactive Slider
+            const slider = document.getElementById('ba-slider');
+            const beforeImg = document.getElementById('ba-img-before');
+            const divider = document.getElementById('ba-divider');
+
+            if(slider && beforeImg && divider) {
+                slider.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    beforeImg.style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
+                    divider.style.left = `${val}%`;
+                });
+            }
+
+            // Interactive Quote Estimator Logic
+            const selVehicle = document.getElementById('est-vehicle');
+            const selPackage = document.getElementById('est-package');
+            const checkboxes = document.querySelectorAll('.est-addon');
+            
+            const sumVehicle = document.getElementById('sum-vehicle');
+            const sumPackage = document.getElementById('sum-package');
+            const sumAddons = document.getElementById('sum-addons');
+            const sumPrice = document.getElementById('sum-price');
+            const btnTextBook = document.getElementById('btn-text-book');
+            const previewImg = document.getElementById('vehicle-preview-img');
+
+            function updateEstimate() {
+                if(!selVehicle || !selPackage) return;
+
+                const vehicleOption = selVehicle.options[selVehicle.selectedIndex];
+                const packageOption = selPackage.options[selPackage.selectedIndex];
+
+                let basePrice = parseInt(vehicleOption.getAttribute('data-price')) || 130;
+                let packageMultiplier = selPackage.value === 'works' ? 30 : 0;
+                
+                let vehicleName = vehicleOption.getAttribute('data-name');
+                let packageName = packageOption.getAttribute('data-name');
+                let newImgUrl = vehicleOption.getAttribute('data-img');
+
+                // Dynamic image transition
+                if(previewImg && newImgUrl) {
+                    previewImg.style.opacity = '0.3';
+                    setTimeout(() => {
+                        previewImg.src = newImgUrl;
+                        previewImg.style.opacity = '1';
+                    }, 150);
+                }
+
+                let total = basePrice + packageMultiplier;
+                let selectedAddonsText = [];
+
+                checkboxes.forEach(cb => {
+                    if(cb.checked) {
+                        total += parseInt(cb.value);
+                        selectedAddonsText.push(cb.getAttribute('data-name'));
+                    }
+                });
+
+                sumVehicle.textContent = vehicleName;
+                sumPackage.textContent = packageName;
+                sumAddons.textContent = selectedAddonsText.length > 0 ? selectedAddonsText.join(', ') : 'None';
+                sumPrice.textContent = `$${total}`;
+
+                // Pre-filled SMS link
+                let smsBody = `Hi California Golden Detailers, I would like to book an appointment.\n\nVehicle: ${vehicleName}\nService: ${packageName}\nAdd-ons: ${selectedAddonsText.join(', ') || 'None'}\nEstimated Total: $${total}\n\nPlease let me know your earliest opening!`;
+                btnTextBook.href = `sms:+15719822034?body=${encodeURIComponent(smsBody)}`;
+            }
+
+            if(selVehicle && selPackage) {
+                selVehicle.addEventListener('change', updateEstimate);
+                selPackage.addEventListener('change', updateEstimate);
+                checkboxes.forEach(cb => cb.addEventListener('change', updateEstimate));
+                updateEstimate();
+            }
+        });
+    </script>
+</body>
+</html>
